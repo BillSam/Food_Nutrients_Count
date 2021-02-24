@@ -1,7 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     </head>
     <body>
 
@@ -38,7 +38,7 @@
                                 </label>
                                 <select class="col-md-6 form-control" name="food_consumed" id="food_consumed">
                                         {% for food in foods %}
-                                         <option value="{‌{food.name}}">{‌{food.name}}</option>
+                                         <option value="{{ food.name }}">{{ food.name }}</option>
                                         {% endfor %}
                                 </select>
                                 <button class="btn btn-success" type="submit">Add</button>
@@ -65,11 +65,11 @@
                         </tr>
                                 {% for c in consumed_food %}
                                 <tr>
-                                    <td>{‌{c.food_consumed.name}}</td>
-                                    <td>{‌{c.food_consumed.carbs}}</td>
-                                    <td>{‌{c.food_consumed.protein}}</td>
-                                    <td>{‌{c.food_consumed.fats}}</td>
-                                    <td>{‌{c.food_consumed.calories}}</td>
+                                    <td>{{c.food_consumed.name}}</td>
+                                    <td>{{c.food_consumed.carbs}}</td>
+                                    <td>{{c.food_consumed.proteins}}</td>
+                                    <td>{{c.food_consumed.fats}}</td>
+                                    <td>{{c.food_consumed.calories}}</td>
                                     <td><a class="btn btn-danger" href="{% url 'delete' c.id %}">X</a></td>
                                 </tr>
 
@@ -108,10 +108,10 @@
 
 </body>
 <script>
-    var table = document.getElementById("table");
-    var carbs=0,protein=0,fats=0,calories=0;
+    const table = document.getElementById("table");
+    let carbs = 0, protein = 0, fats = 0, calories = 0;
 
-    for(var i=1;i<table.rows.length-1;i++){
+    for(let i=1; i<table.rows.length-1; i++){
         console.log(table.rows[i].cells[1].innerHTML);
         carbs +=parseFloat(table.rows[i].cells[1].innerHTML);
         carbs = Math.round(carbs);
@@ -132,42 +132,42 @@
 
     document.getElementById("totalCalories").innerHTML = '<b>' +calories+'(Kcal)</b>';
 
-    var calPer = (calories/2000) *100;
+    const calPer = (calories / 2000) * 100;
     document.getElementsByClassName("progress-bar")[0].setAttribute("style","width:"+calPer+"%");
 
 
-    var total  = carbs+protein+fats;
-    var carbsP = Math.round((carbs/total)*100);
-    var protienP = Math.round((protein/total)*100);
-    var fatsP = Math.round((fats/total)*100);
+    const total = carbs + protein + fats;
+
+    const carbsP = Math.round((carbs / total) * 100);
+    const protienP = Math.round((protein / total) * 100);
+    const fatsP = Math.round((fats / total) * 100);
 
 
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Carbs ' + carbsP + '%', 'Protein ' + protienP + '%', 'Fats ' + fatsP + '%'],
+            datasets: [{
+                label: '# of Votes',
+                data: [carbsP, protienP, fatsP],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
 
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Carbs '+carbsP+'%', 'Protein '+protienP+'%', 'Fats '+fatsP+'%'],
-        datasets: [{
-            label: '# of Votes',
-            data: [carbsP, protienP, fatsP],
-            backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
 
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
 
-            ],
-            borderWidth: 1
-        }]
-    },
-
-});
+    });
 
 
 </script>
