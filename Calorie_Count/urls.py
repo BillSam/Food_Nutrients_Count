@@ -19,5 +19,6 @@ from cc import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name="foods")
+    path('', views.index, name="foods"),
+    path('delete/<int:id>/', views.delete_consume, name="delete"),
 ]
